@@ -4,7 +4,6 @@ class Order < ApplicationRecord
   has_many :products, through: :order_items
 
   validates :customer_name, presence: true
-  validates :uuid, presence: true
 
   before_validation :assign_uuid
 
@@ -18,6 +17,7 @@ class Order < ApplicationRecord
 
     while presence == true
       generated_uuid = SecureRandom.uuid
+
       presence = false unless Order.exists?(uuid: generated_uuid)
     end
 
