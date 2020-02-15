@@ -18,7 +18,7 @@ end
 # Useful for debugging, will open a chrome window that you can fully interacte with that is helpful to use with pry.
 # See after(:each) config below for js debbuging output to the console with this driver
 Capybara.register_driver(:chrome) do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome)
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
 end
 # Configure rspec to use drivers.
 RSpec.configure do |config|
