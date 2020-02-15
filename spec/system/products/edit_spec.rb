@@ -21,6 +21,26 @@ RSpec.describe 'Edit product page', type: :system do
     expect(page).to have_a_success_message
   end
 
+  it 'shows form errors' do
+    create(:product, sku: 'PROD-001')
+    product = create(:product)
+
+    visit "/products/#{product.id}/edit"
+    fill_in_product_field('name', with: '')
+    fill_in_product_field('sku', with: '')
+    submit_form
+
+    expect(page).to show_error_for('name', message: "can't be blank")
+    expect(page).to show_error_for('sku', message: "can't be blank")
+
+    within('#product-form') do
+      fill_in_product_field('sku', with: 'PROD-001')
+      submit_form
+    end
+
+    expect(page).to show_error_for('sku', message: 'has already been taken')
+  end
+
   private
 
   def have_value_of(value, attr:)
@@ -43,6 +63,10 @@ RSpec.describe 'Edit product page', type: :system do
     have_text('Successfully updated the product!')
   end
 
+  def show_error_for(name, message:)
+    have_css("#product_#{name}_errors .error", text: message)
+  end
+  
   # it '' do
   #   setup
   #   exercise
