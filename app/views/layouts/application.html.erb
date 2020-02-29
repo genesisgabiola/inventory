@@ -10,8 +10,10 @@
   </head>
 
   <body>
-    <%= render "shared/navbar" %>
-    <%= render "shared/flash" %>
+    <%= render 'shared/navbar', items: {Products: products_path, Warehouses: warehouses_path, Orders: orders_path} %>
+    <%= render 'shared/flash' %>
+    <%= react_component 'HelloWorld' %>
+    <%= react_component 'Calculator', { firstValue: 1, secondValue: 2 } %>
     <%= yield %>
   </body>
 </html>

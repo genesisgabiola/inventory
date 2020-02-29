@@ -9,7 +9,7 @@ RSpec.describe Stock, type: :model do
   end
 
   describe "associations" do
-    subject(:stock) { create(:stock) }
+    subject(:stock) { build(:stock) }
 
     it { is_expected.to belong_to(:product) }
     it { is_expected.to belong_to(:warehouse) }

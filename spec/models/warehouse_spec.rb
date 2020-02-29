@@ -9,7 +9,7 @@ RSpec.describe Warehouse, type: :model do
   end
 
   describe "associations" do
-    subject(:warehouse) { create(:warehouse) }
+    subject(:warehouse) { build(:warehouse) }
 
     it { is_expected.to have_many(:stocks) }
     it { is_expected.to have_many(:products) }

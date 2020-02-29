@@ -5,20 +5,20 @@ class WarehousesController < AdminController
     @warehouses = Warehouse.all
   end
 
-  def show; end
-
-  def edit; end
+  def show
+    @stock = @warehouse.stocks.build
+  end
 
   def new
     @warehouse = Warehouse.new
   end
 
+  def edit; end
+
   def create
     @warehouse = Warehouse.new(warehouse_params)
 
     if @warehouse.save
-      flash.notice = 'Successfully created a warehouse.'
-
       redirect_to warehouse_path(@warehouse)
     else
       render :new
@@ -26,20 +26,20 @@ class WarehousesController < AdminController
   end
 
   def update
-    if @warehouse.update(warehouse_params)
-      flash.notice = 'Successfully updated warehouse.'
-
-      redirect_to warehouse_path(@warehouse)
-    else
-      render :edit
+    respond_to do |format|
+      if @warehouse.update(warehouse_params)
+        format.html { redirect_to @warehouse, notice: 'Warehouse was successfully updated.' }
+      else
+        format.html { render :edit }
+      end
     end
   end
 
   def destroy
-    @warehouse.destroy!
-
-    flash.notice = "Successfully deleted warehouse #{@warehouse.id}."
-    redirect_to warehouses_path
+    @warehouse.destroy
+    respond_to do |format|
+      format.html { redirect_to warehouses_url, notice: 'Warehouse was successfully deleted.' }
+    end
   end
 
   private
@@ -51,4 +51,5 @@ class WarehousesController < AdminController
   def warehouse_params
     params.require(:warehouse).permit(:street, :city, :province)
   end
+
 end
