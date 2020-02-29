@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.5'
 
 gem 'bootsnap', '>= 1.1.0', require: false
+gem 'devise'
 gem 'jbuilder', '~> 2.5'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 5.2.4'
@@ -12,6 +13,7 @@ gem 'sqlite3'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker'
+gem 'react-rails'
 # gem 'mini_racer', platforms: :ruby
 # gem 'bcrypt', '~> 3.1.7'
 # gem 'mini_magick', '~> 4.8'
@@ -38,6 +40,8 @@ end
 
 group :test do
   gem 'capybara', '>= 2.15'
+  gem 'capybara-selenium'
+  gem 'chromedriver-helper'
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end

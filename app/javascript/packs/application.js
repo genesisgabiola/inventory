@@ -5,10 +5,17 @@ import 'bootstrap';
 import popper from 'popper.js';
 import jquery from 'jquery';
 import '../application.scss';
+
 window.Popper = popper;
 window.jQuery = jquery;
 window.$ = jquery;
+
 Rails.start();
 Turbolinks.start();
 ActiveStorage.start();
+
 ReactRailsUJS.detectEvents();
+// Support component names relative to this directory:
+var componentRequireContext = require.context("components", true);
+var ReactRailsUJS = require("react_ujs");
+ReactRailsUJS.useContext(componentRequireContext);

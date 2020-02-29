@@ -5,6 +5,7 @@ RSpec.describe 'Index of all Products page', type: :system do
     create_list(:product, 4)
     product = create(:product, sku: 'SKU-001', name: 'Kobes')
 
+    sign_in_as_user
     visit '/products'
 
     expect(page).to have_a_products_table
@@ -15,8 +16,8 @@ RSpec.describe 'Index of all Products page', type: :system do
     expect(page).to have_table_header_with(text: 'Updated At')
     expect(page).to have_column_for('sku', value: 'SKU-001', record: product)
     expect(page).to have_column_for('name', value: 'Kobes', record: product)
-    expect(page).to have_actions_of('Show', path: "/products/#{product.id}", record: product)
-    expect(page).to have_actions_of('Edit', path: "/products/#{product.id}/edit", record: product)
+    expect(page).to have_actions_of('Show', path:   "/products/#{product.id}", record: product)
+    expect(page).to have_actions_of('Edit', path:   "/products/#{product.id}/edit", record: product)
     expect(page).to have_actions_of('Delete', path: "/products/#{product.id}", record: product)
 
     page.find("table tbody tr#product--#{product.id} td#product--#{product.id}_actions .delete").click
@@ -29,18 +30,24 @@ RSpec.describe 'Index of all Products page', type: :system do
   it 'allows to delete a product', :js do
     product = create(:product, sku: 'SKU-001', name: 'Kobes')
 
+    sign_in_as_user
     visit '/products'
+
     page.find("table tbody tr#product--#{product.id} td#product--#{product.id}_actions .delete").click
     page.driver.browser.switch_to.alert.accept
 
     expect(page).not_to have_column_for('sku', value: 'SKU-001', record: product)
-    expect(page).to have_success_delete_message(product.id)
+    expect(page).to have_a_success_delete_message(product.id)
   end
 
   private
 
   def have_a_products_table
     have_css('table#products-table')
+  end
+
+  def have_a_new_products_button
+    have_link('New Product', href: '/products/new')
   end
 
   def have_products_with(count:)
@@ -61,11 +68,7 @@ RSpec.describe 'Index of all Products page', type: :system do
     end
   end
 
-  def have_a_new_products_button
-    have_link('New Product', href: '/products/new')
-  end
-
-  def have_success_delete_message(id)
-    have_text("Successfully deleted product #{id}!")
+  def have_a_success_delete_message(id)
+    have_text("Successfully deleted product #{id}.")
   end
 end

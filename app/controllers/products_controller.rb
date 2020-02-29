@@ -1,4 +1,4 @@
-class ProductsController < ApplicationController
+class ProductsController < AdminController
   before_action :assign_product, only: %i[show edit update destroy]
 
   def index
@@ -6,6 +6,8 @@ class ProductsController < ApplicationController
   end
 
   def show; end
+
+  def edit; end
 
   def new
     @product = Product.new
@@ -15,7 +17,7 @@ class ProductsController < ApplicationController
     @product = Product.new(product_params)
 
     if @product.save
-      flash.notice = 'Successfully created a product!'
+      flash.notice = 'Successfully created a product.'
 
       redirect_to product_path(@product)
     else
@@ -23,11 +25,9 @@ class ProductsController < ApplicationController
     end
   end
 
-  def edit; end
-
   def update
     if @product.update(product_params)
-      flash.notice = 'Successfully updated the product!'
+      flash.notice = 'Successfully updated product.'
 
       redirect_to product_path(@product)
     else
@@ -38,7 +38,7 @@ class ProductsController < ApplicationController
   def destroy
     @product.destroy!
 
-    flash.notice = "Successfully deleted product #{@product.id}!"
+    flash.notice = "Successfully deleted product #{@product.id}."
     redirect_to products_path
   end
 

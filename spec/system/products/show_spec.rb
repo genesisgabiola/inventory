@@ -1,25 +1,19 @@
 require 'rails_helper'
 
-RSpec.describe 'Shows the product page', type: :system do
-  it 'shows all product information' do
-    product = create(:product, name: 'Casio Watch', sku: 'CAS-012')
+RSpec.describe 'Shows the Product page', type: :system do
+  it 'shows all product information', :js do
+    product = create(:product, sku: 'CAS-012', name: 'Casio Watch')
 
+    sign_in_as_user
     visit "/products/#{product.id}"
 
-    expect(page).to have_attribute_of('name', value: 'Casio Watch', para_sa: product)
-    expect(page).to have_attribute_of('sku', value: 'CAS-012', para_sa: product)
+    expect(page).to have_attribute_for('sku', value: 'CAS-012', record: product)
+    expect(page).to have_attribute_for('name', value: 'Casio Watch', record: product)
   end
 
   private
 
-  def have_attribute_of(name, value:, para_sa:)
-    have_css("#product--#{para_sa.id}_#{name}", text: value)
+  def have_attribute_for(name, value:, record:)
+    have_css("#product--#{record.id}_#{name}", text: value)
   end
- 
-  # it '' do
-  #   setup
-  #   exercise
-  #   verify
-  #   cleanup
-  # end
 end

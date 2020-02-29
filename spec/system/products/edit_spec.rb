@@ -4,27 +4,26 @@ RSpec.describe 'Edit product page', type: :system do
   it 'allows to edit a product' do
     product = create(:product, name: 'Haier', sku: 'HTV-32-LED')
 
+    sign_in_as_user
     visit "/products/#{product.id}/edit"
 
-    # Expect values of the record to reflect on the input
     expect(page).to have_value_of('Haier', attr: 'name')
     expect(page).to have_value_of('HTV-32-LED', attr: 'sku')
 
-    # Change values of the form
     fill_in_product_field('name', with: 'Sony')
     fill_in_product_field('sku', with: 'SNY-65-LED')
     submit_form
 
-    # Expect that the record will change values
     expect(page).to have_attribute_of('name', value: 'Sony', record: product)
     expect(page).to have_attribute_of('sku', value: 'SNY-65-LED', record: product)
     expect(page).to have_a_success_message
   end
 
-  it 'shows form errors' do
+  it 'shows me test errors' do
     create(:product, sku: 'PROD-001')
     product = create(:product)
 
+    sign_in_as_user
     visit "/products/#{product.id}/edit"
     fill_in_product_field('name', with: '')
     fill_in_product_field('sku', with: '')
@@ -60,17 +59,10 @@ RSpec.describe 'Edit product page', type: :system do
   end
 
   def have_a_success_message
-    have_text('Successfully updated the product!')
+    have_text('Successfully updated product.')
   end
 
   def show_error_for(name, message:)
     have_css("#product_#{name}_errors .error", text: message)
   end
-  
-  # it '' do
-  #   setup
-  #   exercise
-  #   verify
-  #   cleanup
-  # end
 end

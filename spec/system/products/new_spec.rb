@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Create a product page', type: :system do
   it 'allows me to create a new product' do
+    sign_in_as_user
     visit '/products/new'
 
     within('#product-form') do
@@ -17,10 +18,12 @@ RSpec.describe 'Create a product page', type: :system do
     expect(page).to have_a_success_message
   end
 
-  it 'shows form errors' do
+  it 'shows me test errors' do
     create(:product, sku: 'PROD-001')
 
+    sign_in_as_user
     visit '/products/new'
+
     submit_form
 
     expect(page).to show_error_for('name', message: "can't be blank")
@@ -49,17 +52,10 @@ RSpec.describe 'Create a product page', type: :system do
   end
 
   def have_a_success_message
-    have_text('Successfully created a product!')
+    have_text('Successfully created a product.')
   end
 
   def show_error_for(name, message:)
     have_css("#product_#{name}_errors .error", text: message)
   end
-
-  # it '' do
-  #   setup
-  #   exercise
-  #   verify
-  #   cleanup
-  # end
 end
